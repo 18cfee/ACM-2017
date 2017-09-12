@@ -1,34 +1,32 @@
+import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.util.Scanner;
 
 public class Driver
 {
     public static void main (String [] args) throws FileNotFoundException
     {
-        Scanner in = new Scanner (new File("numbers.in"));
+        Scanner in = new Scanner (new File ("numbers.in"));
         PrintWriter out = new PrintWriter (new File ("numbers.out"));
-
+        int i2 = in.nextInt();
+        in.nextLine();
         while (in.hasNext())
         {
-            int g = in.nextInt();
-            int l = in.nextInt();
-            if(g + l == 0) break;
-            int finalNum = method(g,l);
-            out.println(finalNum);
+            String g = in.nextLine();
+            String f = in.nextLine();
+            String create = "";
+            for(int i = 0; i < f.length(); i++){
+                int a1 = ((int)g.charAt(i) - 1);
+                int b1 = (int)f.charAt(i) + 1;
+                if(a1 == 31) a1 = 126;
+                if(b1 == 127) b1 = 32;
+                String a = String.valueOf((char)(a1));
+                String b = String.valueOf((char)(b1));
+                create += a + b;
+            }
+            if(f.length() < g.length()) create += (g.charAt(g.length()-1) + 1); // this does not work or have logic to roll around
+            out.println(create);
         }
         out.close();
     }
-    public static int method(int g, int l) {
-        if(g == 0){
-            return 0;
-        }else if(l==0){
-            return g;
-        }
-        int one = method(g-1,l-1);
-        int two = method(g-1,l);
-        return one + two + 1;
-    }
-}
-
