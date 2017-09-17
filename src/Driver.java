@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
@@ -7,43 +8,37 @@ import java.io.PrintWriter;
 
 public class Driver {
     public static void main(String[] args) throws FileNotFoundException {
-        Scanner in = new Scanner(new File("numbers.in"));
-        PrintWriter out = new PrintWriter(new File("numbers.out"));
-        while (in.hasNext()) {
-            int a = in.nextInt();
-            if(a == 0) break;
-            HashSet<Integer> S = funcMult(a);
-            int tot = 0;
-            for(Integer I: S){
-                tot += I;
+        Scanner in = new Scanner(new File("shop.in"));
+        PrintWriter out = new PrintWriter(new File("shop.out"));
+        int n = in.nextInt();
+        for(int i = 0; i < n; i++){
+            int c = in.nextInt();
+            int c2 = c/2 + 2;
+            int[] arrayShop = new int[c2];
+            int indexShop = c2 - 1;
+            if(!(c == 1)) arrayShop[indexShop] = Math.max(in.nextInt(),in.nextInt());
+            else arrayShop[indexShop] = in.nextInt();
+            for(int j = 2; j < c; j++){
+                int insert = in.nextInt();
+                if(j%2 == 1){
+                    indexShop--;
+                    arrayShop[indexShop] = insert;
+                    Arrays.sort(arrayShop);
+                } else {
+                    int lowIn = arrayShop[indexShop];
+                    if(insert > lowIn){
+                        arrayShop[indexShop] = insert;
+                        Arrays.sort(arrayShop);
+                    }
+                }
             }
-            out.println(a == tot);
+            int b = 0;
+            for(int j = 0; j < c2; j++){
+                b += arrayShop[j];
+            }
+            System.out.println("Spree #" + (i+1) + ": " + b + "  ff " + c);
         }
         out.close();
     }
 
-    public static HashSet<Integer> funcMult(int a){
-        int b = a;
-        HashSet<Integer> S = new HashSet<Integer>();
-        S.add(1);
-        for(int i = 2; i <= Math.sqrt(a); i++){
-            while(a%i == 0) {
-                HashSet<Integer> B = (HashSet<Integer>) S.clone();
-                for(Integer I: B){
-                    int mult = I*i;
-                    S.add(mult);
-                    //S.add(b/mult);
-                }
-                a=a/i;
-            }
-        }
-        HashSet<Integer> B = (HashSet<Integer>) S.clone();
-        for(Integer I: B){
-            int mult = I*a;
-            S.add(mult);
-            //S.add(b/mult);
-        }
-        S.remove(b);
-        return S;
-    }
 }
